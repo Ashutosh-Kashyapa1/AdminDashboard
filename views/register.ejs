@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DataVista | Registration Page</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <!-- jquery -->
+  <script src="../../plugins/jquery/jquery.min.js"></script>
+  <!-- for sweatler -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+  <!-- <div class="register-logo">
+    <a href="temp"></a>
+  </div> -->
+
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">Add User</p>
+
+      <form action="/signup" method="post">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="fname" placeholder="Full name">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="email" class="form-control" name="femail" placeholder="Email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" name="fpass" placeholder="Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" name="fcpass" placeholder=" Confirm Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="remember">
+              <label for="remember">
+                Remember Me
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block">ADD</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+
+<script>
+  $(document).ready(function () {
+       $("form").submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Collect form data
+            let formData = {
+                 fname: $("input[name='fname']").val(),
+                 femail: $("input[name='femail']").val(),
+                 fpass: $("input[name='fpass']").val(),
+                 fcpass: $("input[name='fcpass']").val(),
+            };
+
+            Swal.fire({
+                 title: "Do you want to Add User?",
+                 icon: "warning",
+                 showCancelButton: true,
+                 confirmButtonText: "Yes",
+                 cancelButtonText: "Cancel"
+            }).then((result) => {
+                 if (result.isConfirmed) {
+                      $.ajax({
+                           url: "/signup",
+                           type: "POST",
+                           data: JSON.stringify(formData), // Convert to JSON
+                           contentType: "application/json", // Set content type
+                           success: function (response) {
+                                Swal.fire({
+                                     icon: "success",
+                                     text: "User Added successfully!",
+                                     showConfirmButton: false,
+                                     timer: 1500
+                                }).then(() => {
+                                     window.location.href = "/userList"; // Redirect after Swal
+                                });
+                           },
+                           error: function (xhr) {
+                                let errorMessage = xhr.responseJSON?.message || "Something went wrong. Please try again later.";
+                                Swal.fire({
+                                     icon: "error",
+                                     title: "Oops...",
+                                     text: errorMessage,
+                                });
+                           }
+                      });
+                 }
+            });
+       });
+  });
+</script>
+<!-- jQuery -->
+
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+</body>
+</html>
